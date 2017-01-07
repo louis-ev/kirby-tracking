@@ -64,7 +64,7 @@ On first logging event captured, kirby tracking will check for an existing `kirb
 All logs happen in javascript and can be done both with and without a type.
 For example, to log a simple page load:
 
-```
+```js
 logClientEvents('Page loaded.');
 ```
 
@@ -75,9 +75,6 @@ For each logged package, the following meta informations will be collected and s
 "event_type" : event_type,
 "lang" : window.userLang,
 "window_size" : $(window).width()+'×'+$(window).height()
-```
-
-
 
 ## Options
 
