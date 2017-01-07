@@ -49,15 +49,13 @@ $ git submodule add https://github.com/louis-ev/kirby-tracking site/plugins/kirb
 
 ## Setup
 
-To make it work as expected, add the following code to your footer (or copy this file’s content to your own .js files):
-
-Add the following code to your `footer.php` snippet:
+Add the following code to your `footer.php` snippet (or copy its content to your js file):
 
 ```php
 echo js('assets/plugins/kirby-tracking/assets/js/kirby-tracking.js');
 ```
 
-On first logging event captured, kirby tracking will check for an existing `kirbytracking` page. If you already have one and it wasn't created by this plugin, please remove it first or you will get blueprints mismatch and errors.
+On first logging event captured, kirby-tracking will check for an existing `kirby-tracking` page. If you already have one and it wasn't created by this plugin, please remove it first or you will get blueprints mismatch and errors.
 
 ## Usage
 
