@@ -1,0 +1,64 @@
+title: Visiteur
+pages: false
+options:
+  preview: false
+  status: false
+  template: false
+  update: true
+  url: false
+icon: user
+files: false
+fields:
+  title:
+    label: Titre
+    type:  text
+    width: 1/2
+  lang:
+    label: Langue du navigateur
+    type:  text
+    width: 1/4
+  window_size:
+    label: Largeur et hauteur d’écran
+    type:  text
+    width: 1/4
+  date:
+    label: Date et heure de la première visite
+    type: datetime
+    time:
+      format: 24
+      interval: 1
+    width: 1/2
+  ip:
+    label: Adresse IP
+    type: text
+    width: 1/2
+    help: Utilisez le site <em>ipinfodb</em> pour trouver le pays d’origine d’une IP <span>:</span> <a href="http://www.ipinfodb.com/ip_locator.php" target="_blank">ipinfodb.com/ip_locator.php</a>
+  browser:
+    label: Navigateur
+    type: text
+    width: 1/2
+  device:
+    label: Appareil
+    type: text
+    width: 1/2
+
+  events:
+    label: Événements
+    type: structure
+    style: table
+    modalsize: small
+    fields:
+      event_date:
+        label: Date
+        type: date
+        format: YYYY/MM/DD
+      event_time:
+        label: Heure
+        type: time
+        interval: 1
+      event_page:
+        label: Page
+        type: url
+      event_type:
+        label: Action
+        type: textarea

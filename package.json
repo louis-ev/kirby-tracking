@@ -1,0 +1,12 @@
+{
+   "name": "kirby-tracking",
+   "description": "A tiny plugin for local traffic analytics in Kirby CMS.",
+   "author": "Louis Eveillard",
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/louis-ev/kirby-tracking"
+   },
+   "version": "1.0.0",
+   "type": "kirby-plugin",
+   "license": "MIT"
+}

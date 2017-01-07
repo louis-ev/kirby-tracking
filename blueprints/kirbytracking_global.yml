@@ -1,0 +1,23 @@
+title: Tracking global
+pages: true
+  template: logfile
+  sortable: false
+  sort: flip
+options:
+  preview: false
+  status: false
+  template: false
+  update: true
+  url: false
+icon: users
+files: false
+fields:
+  title:
+    label: Title
+    type:  text
+
+  doNotLogLogged:
+    label: Options
+    type: checkbox
+    text: ne pas tracker les visiteurs loggés au panel
+    width: 1/2
