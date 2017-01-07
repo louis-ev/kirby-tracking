@@ -70,11 +70,11 @@ logClientEvents('Page loaded.');
 
 For each logged package, the following meta informations will be collected and sent:
 - browser — name of browser and version 
-- device — 
-"event_page" : event_page,
-"event_type" : event_type,
-"lang" : window.userLang,
-"window_size" : $(window).width()+'×'+$(window).height()
+- device — client's user agent
+- event_page — type from which the event originated (with site url automatically replaced with ~)
+- event_type — js string sent to logClientEvents (with site url automatically replaced with ~)
+- lang — lang of browser
+- window_size : browser innerWidth and innerHeight
 
 ## Options
 
