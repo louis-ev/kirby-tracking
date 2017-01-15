@@ -19,5 +19,6 @@ fields:
   doNotLogLogged:
     label: Options
     type: checkbox
-    text: ne pas tracker les visiteurs loggés au panel
+    text: do not track users logged in to the panel
+    help: if unchecked, users will be logged as "admin"
     width: 1/2

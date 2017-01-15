@@ -6,7 +6,7 @@ Copy this repo
 
 ![Version](https://img.shields.io/badge/version-1.0.0-green.svg) ![License](https://img.shields.io/badge/license-MIT-green.svg) ![Kirby Version](https://img.shields.io/badge/Kirby-2.3%2B-red.svg)
 
-*Version 1.0.0*
+*Version 1.1.0*
 
 A tiny plugin for local traffic analytics in Kirby CMS.
 
@@ -53,6 +53,12 @@ Add the following code to your `footer.php` snippet (or copy its content to your
 
 ```php
 echo js('assets/plugins/kirby-tracking/assets/js/kirby-tracking.js');
+```
+
+Each visit generates a page named with the server's time for the visit, so set the timezone of your site in your `config.php`:
+
+```php
+c::set('timezone','Europe/Paris');
 ```
 
 On first logging event captured, kirby-tracking will check for an existing `kirby-tracking` page. If you already have one and it wasn't created by this plugin, please remove it first or you will get blueprints mismatch and errors.

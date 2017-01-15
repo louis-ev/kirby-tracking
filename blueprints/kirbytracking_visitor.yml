@@ -14,46 +14,42 @@ fields:
     type:  text
     width: 1/2
   lang:
-    label: Langue du navigateur
+    label: Lang
     type:  text
     width: 1/4
   window_size:
-    label: Largeur et hauteur d’écran
+    label: Width×Height of browser
     type:  text
     width: 1/4
   date:
-    label: Date et heure de la première visite
+    label: Date and time of first visit (client-side)
     type: datetime
     time:
-      format: 24
+      format: Y-m-d H:i:s
       interval: 1
     width: 1/2
   ip:
-    label: Adresse IP
+    label: IP address
     type: text
     width: 1/2
-    help: Utilisez le site <em>ipinfodb</em> pour trouver le pays d’origine d’une IP <span>:</span> <a href="http://www.ipinfodb.com/ip_locator.php" target="_blank">ipinfodb.com/ip_locator.php</a>
+    help: Use the following site to get a rough idea of the country corresponding to this IP<span>:</span> <a href="http://www.ipinfodb.com/ip_locator.php" target="_blank">ipinfodb.com/ip_locator.php</a>
   browser:
-    label: Navigateur
+    label: Browser
     type: text
     width: 1/2
-  device:
-    label: Appareil
+  useragent:
+    label: User Agent
     type: text
     width: 1/2
 
   events:
-    label: Événements
+    label: Events
     type: structure
     style: table
     modalsize: small
     fields:
-      event_date:
-        label: Date
-        type: date
-        format: YYYY/MM/DD
       event_time:
-        label: Heure
+        label: Time since the beginning of this session
         type: time
         interval: 1
       event_page:

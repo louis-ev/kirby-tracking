@@ -18,44 +18,50 @@ function log_event($sessionid, $data) {
 
   if(!array_key_exists('epochdate', $data))
     return;
-  $epochdate = $data['epochdate'];
+  $epochdate = intval($data['epochdate']);
 
-  $typeOfVisitor = 'visiteur';
+  $typeOfVisitor = 'visitor';
   	if($user = site()->user() and $user->hasPanelAccess()) {
     if($trackingpage->doNotLogLogged()->bool()) {
       return;
     } else {
       $typeOfVisitor = 'admin';
     }
+  } else {
+    if(preg_match("/Googlebot|MJ12bot|yandexbot|Google Page Speed Insights/i", $data['useragent'])):
+      $typeOfVisitor = 'bot';
+    endif;
   }
 
-  $IP = array_key_exists('IP', $data) ? $data['IP'] : '';
-  $browser = array_key_exists('browser', $data) ? $data['browser'] : '';
-  $device = array_key_exists('device', $data) ? $data['device'] : '';
-  $lang = array_key_exists('lang', $data) ? $data['lang'] : '';
-  $window_size = array_key_exists('window_size', $data) ? $data['window_size'] : '';
-
   $date = date('Ymd', $epochdate/1000);
-  $dateMin = date('YmdHi', $epochdate/1000);
-  $dateSec = date('YmdHis', $epochdate/1000);
-
-  $dateHR = date('Y-m-d', $epochdate/1000);
-  $dateMinOnlyHR = date('H:i:s', $epochdate/1000);
 
   $pagename = isset($sessionid) ? $sessionid:'visitor';
 
   if(!$trackingpage->find($pagename)):
     // create a page with : a TITLE, DATE, IP, BROWSER
     $currentTrackingNumber = $trackingpage->children()->visible()->count() + 1;
+    $serverDateHR = date('Y-m-d • H:i:s', time());
+    $dateSec = date('YmdHis', $epochdate/1000);
+
+    $IP = array_key_exists('IP', $data) ? $data['IP'] : '';
+    $browser = array_key_exists('browser', $data) ? $data['browser'] : '';
+    $useragent = array_key_exists('useragent', $data) ? $data['useragent'] : '';
+    $lang = array_key_exists('lang', $data) ? $data['lang'] : '';
+    $window_size = array_key_exists('window_size', $data) ? $data['window_size'] : '';
+
     $logpage = $trackingpage->children()->create($currentTrackingNumber . '-' . $pagename, 'kirbytracking_visitor', array(
-      'title' => $dateHR . ' à ' . $dateMinOnlyHR . ' — ' . $typeOfVisitor . ' sur ' . $browser,
-      'date'  => $dateMin,
+      'title' => $serverDateHR . ' — ' . $typeOfVisitor . ' sur ' . $browser,
+      'date'  => $dateSec,
       'IP'  => $IP,
       'browser'  => $browser,
-      'device'  => $device,
+      'useragent'  => $useragent,
       'lang' => $lang,
       'window_size' => $window_size,
     ));
+
+    // store first visit time in session id
+    s::set('timestamp_first_visit', $epochdate);
+
   else:
     $logpage = $trackingpage->find($sessionid);
   endif;
@@ -66,13 +72,13 @@ function log_event($sessionid, $data) {
   $event_type = array_key_exists('event_type', $data) ? $data['event_type'] : '-';
   $event_page = str_replace(site()->url(), '~', $event_page);
 
-  $time = date('H:i:s', $epochdate/1000);
-  $millis = $epochdate % 1000;
+  // measure the time delta since first visit
+  $deltaSinceFirstVisit = $epochdate - s::get('timestamp_first_visit');
 
-  // append in structure field DATE OF EVENT, PAGE VISITED, TYPE OF INTERACTION
+  $timeSinceFirstVisit = gmdate('H:i:s', $deltaSinceFirstVisit/1000) . '.' . $deltaSinceFirstVisit % 1000;
+
   $event = array(
-    'event_date' => $date,
-    'event_time' => $time . '.' . $millis,
+    'event_time' => $timeSinceFirstVisit,
     'event_page' => $event_page,
     'event_type' => $event_type
   );
