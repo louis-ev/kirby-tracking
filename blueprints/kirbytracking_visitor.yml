@@ -1,4 +1,4 @@
-title: Visiteur
+title: Visitor
 pages: false
 options:
   preview: false
@@ -10,7 +10,7 @@ icon: user
 files: false
 fields:
   title:
-    label: Titre
+    label: Title
     type:  text
     width: 1/2
   lang:
