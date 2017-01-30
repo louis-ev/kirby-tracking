@@ -21,23 +21,29 @@ function log_event($sessionid, $data) {
   $epochdate = intval($data['epochdate']);
 
   $typeOfVisitor = 'visitor';
-  	if($user = site()->user() and $user->hasPanelAccess()) {
+    if($user = site()->user() and $user->hasPanelAccess()) {
     if($trackingpage->doNotLogLogged()->bool()) {
       return;
     } else {
       $typeOfVisitor = 'admin';
     }
   } else {
-    if(preg_match("/Googlebot|MJ12bot|yandexbot|Google Page Speed Insights/i", $data['useragent'])):
-      $typeOfVisitor = 'bot';
+    if(preg_match("/Googlebot|MJ12bot|yandexbot|Google Page Speed Insights|crawler|spider|robot|crawling|baidu|bing|msn|duckduckgo|teoma|slurp|yandex/i", $data['useragent'])):
+      if($trackingpage->doNotLogBots()->bool()) {
+        return;
+      } else {
+        $typeOfVisitor = 'bot';
+      }
     endif;
   }
 
   $date = date('Ymd', $epochdate/1000);
 
-  $pagename = isset($sessionid) ? $sessionid:'visitor';
+  // make a page name : either a sessionid if there's one, or the epoch if not
+  $pagename = !empty($sessionid) ? $sessionid : 'v'.$epochdate;
 
   if(!$trackingpage->find($pagename)):
+
     // create a page with : a TITLE, DATE, IP, BROWSER
     $currentTrackingNumber = $trackingpage->children()->visible()->count() + 1;
     $serverDateHR = date('Y-m-d • H:i:s', time());
@@ -103,17 +109,17 @@ function addToStructure($page, $field, $data = array()){
 
 // from https://github.com/FabianSperrle/kirby-stats/blob/master/site/widgets/stats/helpers.php
 function getTrackingPage() {
-	$tracking = page('kirby-tracking');
-	if (!$tracking) {
-		try {
-			$tracking = site()->create('kirby-tracking', 'kirbytracking_global', array(
+  $tracking = page('kirby-tracking');
+  if (!$tracking) {
+    try {
+      $tracking = site()->create('kirby-tracking', 'kirbytracking_global', array(
         'title' => 'Tracking'
       ));
-		} catch (Exception $e) {
+    } catch (Exception $e) {
 
-			exit;
-		}
-	}
-	return $tracking;
+      exit;
+    }
+  }
+  return $tracking;
 }
 
