@@ -27,5 +27,5 @@ fields:
     label: Options
     type: checkbox
     text: do not track bots
-    help: If checked, bots visites won’t be logger.
+    help: If checked, bots visits won’t be logged.
     width: 1/2
