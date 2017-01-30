@@ -39,9 +39,11 @@ function log_event($sessionid, $data) {
 
   $date = date('Ymd', $epochdate/1000);
 
-  $pagename = isset($sessionid) ? $sessionid:'visitor';
+  // make a page name : either a sessionid if there's one, or the epoch if not
+  $pagename = !empty($sessionid) ? $sessionid : 'v'.$epochdate;
 
   if(!$trackingpage->find($pagename)):
+
     // create a page with : a TITLE, DATE, IP, BROWSER
     $currentTrackingNumber = $trackingpage->children()->visible()->count() + 1;
     $serverDateHR = date('Y-m-d • H:i:s', time());
