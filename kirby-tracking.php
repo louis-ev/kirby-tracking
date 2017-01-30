@@ -21,15 +21,19 @@ function log_event($sessionid, $data) {
   $epochdate = intval($data['epochdate']);
 
   $typeOfVisitor = 'visitor';
-  	if($user = site()->user() and $user->hasPanelAccess()) {
+    if($user = site()->user() and $user->hasPanelAccess()) {
     if($trackingpage->doNotLogLogged()->bool()) {
       return;
     } else {
       $typeOfVisitor = 'admin';
     }
   } else {
-    if(preg_match("/Googlebot|MJ12bot|yandexbot|Google Page Speed Insights/i", $data['useragent'])):
-      $typeOfVisitor = 'bot';
+    if(preg_match("/Googlebot|MJ12bot|yandexbot|Google Page Speed Insights|crawler|spider|robot|crawling|baidu|bing|msn|duckduckgo|teoma|slurp|yandex/i", $data['useragent'])):
+      if($trackingpage->doNotLogBots()->bool()) {
+        return;
+      } else {
+        $typeOfVisitor = 'bot';
+      }
     endif;
   }
 
@@ -103,17 +107,17 @@ function addToStructure($page, $field, $data = array()){
 
 // from https://github.com/FabianSperrle/kirby-stats/blob/master/site/widgets/stats/helpers.php
 function getTrackingPage() {
-	$tracking = page('kirby-tracking');
-	if (!$tracking) {
-		try {
-			$tracking = site()->create('kirby-tracking', 'kirbytracking_global', array(
+  $tracking = page('kirby-tracking');
+  if (!$tracking) {
+    try {
+      $tracking = site()->create('kirby-tracking', 'kirbytracking_global', array(
         'title' => 'Tracking'
       ));
-		} catch (Exception $e) {
+    } catch (Exception $e) {
 
-			exit;
-		}
-	}
-	return $tracking;
+      exit;
+    }
+  }
+  return $tracking;
 }
 
