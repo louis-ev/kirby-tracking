@@ -28,7 +28,7 @@ function log_event($sessionid, $data) {
       $typeOfVisitor = 'admin';
     }
   } else {
-    if(preg_match("/Googlebot|MJ12bot|yandexbot|Google Page Speed Insights|crawler|spider|robot|crawling|baidu|bing|msn|duckduckgo|teoma|slurp|yandex/i", $data['useragent'])):
+    if(preg_match("/Googlebot|MJ12bot|yandexbot|Google Page Speed Insights|crawler|spider|robot|crawling|baidu|bing|msn|duckduckgo|teoma|slurp|yandex|Coda,/i", $data['useragent'])):
       if($trackingpage->doNotLogBots()->bool()) {
         return;
       } else {
