@@ -18,7 +18,7 @@ function log_event($sessionid, $data) {
 
   if(!array_key_exists('epochdate', $data))
     return;
-  $epochdate = intval($data['epochdate']);
+  $epochdate = intval(esc($data['epochdate']));
 
   $typeOfVisitor = 'visitor';
     if($user = site()->user() and $user->hasPanelAccess()) {
@@ -49,11 +49,11 @@ function log_event($sessionid, $data) {
     $serverDateHR = date('Y-m-d • H:i:s', time());
     $dateSec = date('YmdHis', $epochdate/1000);
 
-    $IP = array_key_exists('IP', $data) ? $data['IP'] : '';
-    $browser = array_key_exists('browser', $data) ? $data['browser'] : '';
-    $useragent = array_key_exists('useragent', $data) ? $data['useragent'] : '';
-    $lang = array_key_exists('lang', $data) ? $data['lang'] : '';
-    $window_size = array_key_exists('window_size', $data) ? $data['window_size'] : '';
+    $IP = array_key_exists('IP', $data) ?                                     esc($data['IP']) : '';
+    $browser = array_key_exists('browser', $data) ?                           esc($data['browser']) : '';
+    $useragent = array_key_exists('useragent', $data) ?                       esc($data['useragent']) : '';
+    $lang = array_key_exists('lang', $data) ?                                 esc($data['lang']) : '';
+    $window_size = array_key_exists('window_size', $data) ?                   esc($data['window_size']) : '';
 
     $logpage = $trackingpage->children()->create($currentTrackingNumber . '-' . $pagename, 'kirbytracking_visitor', array(
       'title' => $serverDateHR . ' — ' . $typeOfVisitor . ' sur ' . $browser,
@@ -72,10 +72,10 @@ function log_event($sessionid, $data) {
     $logpage = $trackingpage->find($sessionid);
   endif;
 
-  $event_page = array_key_exists('event_page', $data) ? $data['event_page'] : '-';
+  $event_page = array_key_exists('event_page', $data) ? esc($data['event_page']) : '-';
   $event_page = str_replace(site()->url(), '~', $event_page);
 
-  $event_type = array_key_exists('event_type', $data) ? $data['event_type'] : '-';
+  $event_type = array_key_exists('event_type', $data) ? esc($data['event_type']) : '-';
   $event_page = str_replace(site()->url(), '~', $event_page);
 
   // measure the time delta since first visit
