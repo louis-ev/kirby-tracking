@@ -1,8 +1,10 @@
 title: Tracking global
-pages: true
-  template: logfile
-  sortable: false
-  sort: flip
+pages:
+  template: kirbytracking_monthly
+  num:
+    mode: date
+    format: Ym
+  sort: flip 
 options:
   preview: false
   status: false
@@ -20,7 +22,7 @@ fields:
     label: Options
     type: checkbox
     text: do not track users logged in to the panel
-    help: If checked, admins visit won’t be logged. If unchecked, users will be logged as "admin".
+    help: If checked, admins visit won’t be logged. If unchecked, users will be logged as "admin" instead of "visitor".
     width: 1/2
 
   doNotLogBots:

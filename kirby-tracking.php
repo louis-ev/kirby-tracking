@@ -10,6 +10,7 @@
 include __DIR__ . DS . 'routes.php';
 
 $kirby->set('blueprint', 'kirbytracking_global', __DIR__ . '/blueprints/kirbytracking_global.yml');
+$kirby->set('blueprint', 'kirbytracking_monthly', __DIR__ . '/blueprints/kirbytracking_monthly.yml');
 $kirby->set('blueprint', 'kirbytracking_visitor', __DIR__ . '/blueprints/kirbytracking_visitor.yml');
 
 function log_event($sessionid, $data) {
@@ -109,6 +110,8 @@ function addToStructure($page, $field, $data = array()){
 
 // from https://github.com/FabianSperrle/kirby-stats/blob/master/site/widgets/stats/helpers.php
 function getTrackingPage() {
+  
+  // find or create tracking page
   $tracking = page('kirby-tracking');
   if (!$tracking) {
     try {
@@ -116,10 +119,12 @@ function getTrackingPage() {
         'title' => 'Tracking'
       ));
     } catch (Exception $e) {
+      exit;
+    }
+  }
 
       exit;
     }
   }
-  return $tracking;
 }
 
