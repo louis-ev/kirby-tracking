@@ -57,7 +57,7 @@ function log_event($sessionid, $data) {
     $window_size = array_key_exists('window_size', $data) ?                   esc($data['window_size']) : '';
 
     $logpage = $trackingpage->children()->create($currentTrackingNumber . '-' . $pagename, 'kirbytracking_visitor', array(
-      'title' => $serverDateHR . ' — ' . $typeOfVisitor . ' sur ' . $browser,
+      'title' => $serverDateHR . ' — ' . $typeOfVisitor . ' on ' . $browser,
       'date'  => $dateSec,
       'IP'  => $IP,
       'browser'  => $browser,
@@ -123,8 +123,23 @@ function getTrackingPage() {
     }
   }
 
+  // find the month page
+  $currentMonth = date('F Y');
+  $monthlyPage = $tracking->children()->find(str::slug($currentMonth));
+
+  if (!$monthlyPage) {
+    try {
+      $folderPrefix = date('Ymd');
+
+      $monthlyPage = $tracking->children()->create($folderPrefix . '-' . str::slug($currentMonth), 'kirbytracking_monthly', array(
+        'title' => $currentMonth,
+        'date'  => $folderPrefix
+      ));
+    } catch (Exception $e) {
       exit;
     }
   }
+
+  return $monthlyPage;
 }
 
