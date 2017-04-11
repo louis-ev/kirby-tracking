@@ -1,0 +1,25 @@
+title: Monthly trackings
+pages:
+  template: kirbytracking_visitor
+  sortable: false
+  sort: flip
+options:
+  preview: false
+  status: false
+  template: false
+  update: true
+  url: false
+icon: calendar-o
+files: false
+fields:
+
+  title:
+    label: Title
+    type:  text
+
+  date:
+    icon: calendar
+    label: Date
+    type: hidden
+    format: YYYYmm
+    width: 1/4

@@ -5,7 +5,7 @@ kirby()->routes(array(
     'pattern' => array('logthisevent', '(:all)/logthisevent'),
     'action'  => function() {
       // visit default langage
-    	  site()->visit('/');
+  	  site()->visit('/');
       $sessionid = s::id();
       $data = $_POST;
       $data['IP'] = $_SERVER['REMOTE_ADDR'];

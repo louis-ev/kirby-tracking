@@ -1,14 +1,8 @@
 # Kirby Tracking
 
-## How to install
-Copy this repo 
+![Version](https://img.shields.io/badge/version-1.3.0-green.svg) ![License](https://img.shields.io/badge/license-MIT-green.svg) ![Kirby Version](https://img.shields.io/badge/Kirby-2.3%2B-red.svg)
 
-
-![Version](https://img.shields.io/badge/version-1.2.0-green.svg) ![License](https://img.shields.io/badge/license-MIT-green.svg) ![Kirby Version](https://img.shields.io/badge/Kirby-2.3%2B-red.svg)
-
-*Version 1.2.0*
-
-A tiny plugin for local traffic analytics in Kirby CMS.
+*A tiny plugin for local traffic analytics in Kirby CMS.*
 
 Kirby tracking uses javascript events to identify each visitor with device information and logs all its subsequent events in a page directly accessible through the panel. 
 
@@ -82,11 +76,31 @@ For each logged package, the following meta informations will be collected and s
 
 ## Options
 
-### disable logged-in users tracking
+### Disable logged-in users tracking
 
-You can disable tracking for logged-in users in the `tracking` page in the panel. By default, logged-in users will be identified by the name `admin` in the the title or their page. 
+You can disable tracking for logged-in users in the `tracking` page in the panel. If tracking for logged-in users isn’t disabled, they will be identified with the name `admin`.
+
+### Disable bots tracking
+
+You can disable tracking for bots in the `tracking` page in the panel. Bots tracking is made using the browser's user agent and matching it with the following RegExp: "/Googlebot|MJ12bot|yandexbot|Google Page Speed Insights|crawler|spider|robot|crawling|baidu|bing|msn|duckduckgo|teoma|slurp|yandex|Coda,/i".
 
 ## Changelog
+
+**1.3.0**
+
+- Logs are now regrouped in month pages, for instance: `Kirby Tracking > April 2017 > 2017-04-11 • 16:08:42 — visitor on Firefox 46`
+
+- Escaped data from users as a safety precaution
+
+**1.2.0**
+
+- Better bot detection
+
+- Added option to not log bots
+
+- Fixed some translations
+
+- Improved help texts
 
 **1.0.0**
 
