@@ -4,7 +4,7 @@
 
 *A tiny plugin for local traffic analytics in Kirby CMS.*
 
-Kirby tracking uses javascript events to identify each visitor with device information and logs all its subsequent events in a page directly accessible through the panel. 
+Kirby tracking uses javascript events to identify each visitor with device information and logs all its subsequent events in a page directly accessible through the panel.
 
 ![Screenshot](screenshot.png)
 
@@ -46,7 +46,7 @@ $ git submodule add https://github.com/louis-ev/kirby-tracking site/plugins/kirb
 Add the following code to your `footer.php` snippet (or copy its content to your js file):
 
 ```php
-echo js('assets/plugins/kirby-tracking/assets/js/kirby-tracking.js');
+echo js('assets/plugins/kirby-tracking/js/kirby-tracking.js');
 ```
 
 Each visit generates a page named with the server's time for the visit, so set the timezone of your site in your `config.php`:
@@ -67,7 +67,7 @@ logClientEvents('Page loaded.');
 ```
 
 For each logged package, the following meta informations will be collected and sent:
-- browser — name of browser and version 
+- browser — name of browser and version
 - device — client's user agent
 - event_page — type from which the event originated (with site url automatically replaced with ~)
 - event_type — js string sent to logClientEvents (with site url automatically replaced with ~)
@@ -108,7 +108,7 @@ You can disable tracking for bots in the `tracking` page in the panel. Bots trac
 
 ## Todo
 
-- [ ] If a visitor logs in at some point in her/his navigation, move his status to admin or remove his page if option is set 
+- [ ] If a visitor logs in at some point in her/his navigation, move his status to admin or remove his page if option is set
 
 ## Requirements
 
