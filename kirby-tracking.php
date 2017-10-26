@@ -20,7 +20,7 @@ function log_event($sessionid, $data) {
 
   if(!array_key_exists('epochdate', $data))
     return;
-  $epochdate = intval(esc($data['epochdate']));
+  $epochdate = strtotime(esc($data['epochdate']));
 
   $typeOfVisitor = 'visitor';
     if($user = site()->user() and $user->hasPanelAccess()) {
@@ -39,17 +39,20 @@ function log_event($sessionid, $data) {
     endif;
   }
 
-  $date = date('Ymd', $epochdate/1000);
-
   // make a page name : either a sessionid if there's one, or the epoch if not
   $pagename = !empty($sessionid) ? $sessionid : 'v'.$epochdate;
+
+  // LOGS
+  $logs = array(
+  );
+
 
   if(!$trackingpage->find($pagename)):
 
     // create a page with : a TITLE, DATE, IP, BROWSER
     $currentTrackingNumber = $trackingpage->children()->visible()->count() + 1;
     $serverDateHR = date('Y-m-d • H:i:s', time());
-    $dateSec = date('YmdHis', $epochdate/1000);
+    $dateSec = date('YmdHis', $epochdate);
 
     $IP = array_key_exists('IP', $data) ?                                     esc($data['IP']) : '';
     $browser = array_key_exists('browser', $data) ?                           esc($data['browser']) : '';
@@ -65,6 +68,7 @@ function log_event($sessionid, $data) {
       'useragent'  => $useragent,
       'lang' => $lang,
       'window_size' => $window_size,
+      'log' => var_export($logs, true)
     ));
 
     // store first visit time in session id
