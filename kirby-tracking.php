@@ -9,9 +9,10 @@
 
 include __DIR__ . DS . 'routes.php';
 
-$kirby->set('blueprint', 'kirbytracking_global', __DIR__ . '/blueprints/kirbytracking_global.yml');
-$kirby->set('blueprint', 'kirbytracking_monthly', __DIR__ . '/blueprints/kirbytracking_monthly.yml');
-$kirby->set('blueprint', 'kirbytracking_visitor', __DIR__ . '/blueprints/kirbytracking_visitor.yml');
+$kirby->set('blueprint', 'kirbytracking_global',  __DIR__ . DS . 'blueprints' . DS . 'kirbytracking_global.yml' );
+$kirby->set('blueprint', 'kirbytracking_monthly', __DIR__ . DS . 'blueprints' . DS . 'kirbytracking_monthly.yml');
+$kirby->set('blueprint', 'kirbytracking_visitor', __DIR__ . DS . 'blueprints' . DS . 'kirbytracking_visitor.yml');
+$kirby->set('widget', 'analytics', __DIR__ . DS . 'widgets' . DS . 'analytics');
 
 function log_event($sessionid, $data) {
 
@@ -110,7 +111,7 @@ function addToStructure($page, $field, $data = array()){
 
 // from https://github.com/FabianSperrle/kirby-stats/blob/master/site/widgets/stats/helpers.php
 function getTrackingPage() {
-  
+
   // find or create tracking page
   $tracking = page('kirby-tracking');
   if (!$tracking) {
@@ -142,4 +143,3 @@ function getTrackingPage() {
 
   return $monthlyPage;
 }
-
