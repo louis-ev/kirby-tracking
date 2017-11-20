@@ -9,28 +9,30 @@
 
 include __DIR__ . DS . 'routes.php';
 
-$kirby->set('blueprint', 'kirbytracking_global', __DIR__ . '/blueprints/kirbytracking_global.yml');
-$kirby->set('blueprint', 'kirbytracking_monthly', __DIR__ . '/blueprints/kirbytracking_monthly.yml');
-$kirby->set('blueprint', 'kirbytracking_visitor', __DIR__ . '/blueprints/kirbytracking_visitor.yml');
+$kirby->set('blueprint', 'kirbytracking_global',  __DIR__ . DS . 'blueprints' . DS . 'kirbytracking_global.yml' );
+$kirby->set('blueprint', 'kirbytracking_monthly', __DIR__ . DS . 'blueprints' . DS . 'kirbytracking_monthly.yml');
+$kirby->set('blueprint', 'kirbytracking_visitor', __DIR__ . DS . 'blueprints' . DS . 'kirbytracking_visitor.yml');
+$kirby->set('widget', 'analytics', __DIR__ . DS . 'widgets' . DS . 'analytics');
 
 function log_event($sessionid, $data) {
 
   $trackingpage = getTrackingPage();
+  $monthlyPage = getTrackingMonthPage();
 
   if(!array_key_exists('epochdate', $data))
     return;
-  $epochdate = intval(esc($data['epochdate']));
+  $epochdate = strtotime(esc($data['epochdate']));
 
   $typeOfVisitor = 'visitor';
-    if($user = site()->user() and $user->hasPanelAccess()) {
-    if($trackingpage->doNotLogLogged()->bool()) {
+  if($user = site()->user() and $user->hasPanelAccess()) {
+    if( $trackingpage->doNotLogLogged()->bool() === true ) {
       return;
     } else {
       $typeOfVisitor = 'admin';
     }
   } else {
     if(preg_match("/Googlebot|MJ12bot|yandexbot|Google Page Speed Insights|crawler|spider|robot|crawling|baidu|bing|msn|duckduckgo|teoma|slurp|yandex|Coda,/i", $data['useragent'])):
-      if($trackingpage->doNotLogBots()->bool()) {
+      if( $trackingpage->doNotLogBots()->bool() ) {
         return;
       } else {
         $typeOfVisitor = 'bot';
@@ -38,17 +40,21 @@ function log_event($sessionid, $data) {
     endif;
   }
 
-  $date = date('Ymd', $epochdate/1000);
-
   // make a page name : either a sessionid if there's one, or the epoch if not
   $pagename = !empty($sessionid) ? $sessionid : 'v'.$epochdate;
 
-  if(!$trackingpage->find($pagename)):
+  // LOGS
+  $logs = array(
+    'bool' => $trackingpage->doNotLogLogged()->bool()
+  );
+
+
+  if(!$monthlyPage->find($pagename)):
 
     // create a page with : a TITLE, DATE, IP, BROWSER
-    $currentTrackingNumber = $trackingpage->children()->visible()->count() + 1;
+    $currentTrackingNumber = $monthlyPage->children()->visible()->count() + 1;
     $serverDateHR = date('Y-m-d • H:i:s', time());
-    $dateSec = date('YmdHis', $epochdate/1000);
+    $dateSec = date('YmdHis', $epochdate);
 
     $IP = array_key_exists('IP', $data) ?                                     esc($data['IP']) : '';
     $browser = array_key_exists('browser', $data) ?                           esc($data['browser']) : '';
@@ -56,7 +62,7 @@ function log_event($sessionid, $data) {
     $lang = array_key_exists('lang', $data) ?                                 esc($data['lang']) : '';
     $window_size = array_key_exists('window_size', $data) ?                   esc($data['window_size']) : '';
 
-    $logpage = $trackingpage->children()->create($currentTrackingNumber . '-' . $pagename, 'kirbytracking_visitor', array(
+    $logpage = $monthlyPage->children()->create($currentTrackingNumber . '-' . $pagename, 'kirbytracking_visitor', array(
       'title' => $serverDateHR . ' — ' . $typeOfVisitor . ' on ' . $browser,
       'date'  => $dateSec,
       'IP'  => $IP,
@@ -64,13 +70,14 @@ function log_event($sessionid, $data) {
       'useragent'  => $useragent,
       'lang' => $lang,
       'window_size' => $window_size,
+      'log' => var_export($logs, true)
     ));
 
     // store first visit time in session id
     s::set('timestamp_first_visit', $epochdate);
 
   else:
-    $logpage = $trackingpage->find($sessionid);
+    $logpage = $monthlyPage->find($sessionid);
   endif;
 
   $event_page = array_key_exists('event_page', $data) ? esc($data['event_page']) : '-';
@@ -110,12 +117,12 @@ function addToStructure($page, $field, $data = array()){
 
 // from https://github.com/FabianSperrle/kirby-stats/blob/master/site/widgets/stats/helpers.php
 function getTrackingPage() {
-  
+
   // find or create tracking page
-  $tracking = page('kirby-tracking');
-  if (!$tracking) {
+  $trackingPage = page('kirby-tracking');
+  if (!$trackingPage) {
     try {
-      $tracking = site()->create('kirby-tracking', 'kirbytracking_global', array(
+      $trackingPage = site()->create('kirby-tracking', 'kirbytracking_global', array(
         'title' => 'Tracking'
       ));
     } catch (Exception $e) {
@@ -123,6 +130,13 @@ function getTrackingPage() {
     }
   }
 
+  return $trackingPage;
+}
+
+function getTrackingMonthPage() {
+
+  // get tracking page
+  $tracking = getTrackingPage();
   // find the month page
   $currentMonth = date('F Y');
   $monthlyPage = $tracking->children()->find(str::slug($currentMonth));
@@ -142,4 +156,3 @@ function getTrackingPage() {
 
   return $monthlyPage;
 }
-

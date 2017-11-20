@@ -8,7 +8,7 @@ function logClientEvents(event_type) {
   if(window.userLang === undefined)
     window.userLang = navigator.language || navigator.userLanguage;
 
-  var epochdate = (new Date()).getTime();
+  var epochdate = (new Date()).toISOString();
   var event_page = window.location.href;
 
   var data = {

@@ -58,3 +58,8 @@ fields:
       event_type:
         label: Action
         type: textarea
+
+  log:
+    label: Log
+    type: textarea
+    readonly: true

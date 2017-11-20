@@ -4,7 +4,7 @@ pages:
   num:
     mode: date
     format: Ym
-  sort: flip 
+  sort: flip
 options:
   preview: false
   status: false
@@ -12,6 +12,7 @@ options:
   update: true
   url: false
 icon: users
+hide: true
 files: false
 fields:
   title:
